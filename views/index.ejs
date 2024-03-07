@@ -4,12 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validacion</title>
+    <title>Validación de Números de Teléfono</title>
     <link rel="stylesheet" href="/main.css">
 </head>
 
 <body>
-    <h1>Hola die</h1>
+    <div class="container">
+        <h1>Validación de Números de Teléfono</h1>
+        <form id="formularioPrefijo" action="/validar-numero" method="POST">
+            <label for="prefijoCodigoArea">Código de Área:</label>
+            <input type="text" id="prefijoCodigoArea" name="codigoArea" value="" placeholder="Ej: +54" required><br>
+
+            <label for="prefijoNumero">Número de Teléfono:</label>
+            <input type="text" id="prefijoNumero" name="numero" value="" placeholder="Ej: 341" required>
+            <input type="text" id="numero" name="numero" placeholder="Ej: 7878078" required><br>
+
+            <button type="submit">Validar Número</button>
+        </form>
+        <div id="resultadoValidacion"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>

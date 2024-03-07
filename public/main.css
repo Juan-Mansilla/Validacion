@@ -1,3 +1,61 @@
-body{
-    background-color: aqua;
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #333; /* Gris oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
 }
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    font-size: 20px; 
+    margin-bottom: 10px;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+input[type="number"] {
+    margin-bottom: 10px;
+    font-size: 16px; /* Tamaño de fuente más grande */
+    -moz-appearance: textfield; /* Eliminar flechas Firefox */
+    appearance: textfield; /* Eliminar flechas otros navegadores */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Eliminar flechas Chrome y Safari */
+    margin: 0; /* Espaciado entre el número y el borde */
+}
+input[type="number"]::placeholder {
+    color: #888; /* Gris para el marcador de posición */
+    font-size: 11px; /* Tamaño de fuente */
+}
+
