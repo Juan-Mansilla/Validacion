@@ -30,7 +30,7 @@ app.listen(3000, () =>
 // Punto final para manejar la solicitud POST para validar un número de teléfono
 app.post('/validar-numero', async (req, res) => {
   try {
-    
+
     const numeroCompleto = `${req.body.numero}`;
     sdk('@whapi/v1.7.5#27slv2oltdcs6xr').auth('spSGMF1exmVXWbIFwxMq44pgUVqoKn8B');
 
@@ -57,7 +57,6 @@ app.post('/validar-numero', async (req, res) => {
         console.log('Respuesta de la API de validación:', response);
       })
 
-    
   } catch (error) {
     console.error('Error al llamar a la API:', error.message);
     res.status(500).send('Ocurrió un error al procesar la solicitud.');
