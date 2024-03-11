@@ -1,4 +1,4 @@
-import express from 'express';
+/*import express from 'express';
 import ejs from 'ejs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
@@ -62,4 +62,43 @@ app.post('/validar-numero', async (req, res) => {
     res.status(500).send('Ocurrió un error al procesar la solicitud.');
   }
 });
+*/
 
+const express = require('express');
+const ejs = require('ejs');
+const bodyParser = require('body-parser');
+
+const sdk = require('api')('@whapi/v1.7.5#27slv2oltdcs6xr');
+
+sdk.auth('spSGMF1exmVXWbIFwxMq44pgUVqoKn8B');
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+
+app.post('/validar-numero', (req, res) => {
+  const numero = req.body.numero;
+
+  // Validar el número de teléfono (opcional)
+
+  // Reemplazar el número de prueba con el número ingresado
+  const numeroAValidar = numero.replace(/[^0-9]/g, '');
+
+  // Usar la API para verificar el número
+  sdk.checkPhones({ blocking: 'no_wait', force_check: false, contacts: [numeroAValidar] })
+    .then(({ data }) => {
+      res.render('index', { resultadoValidacion: data });
+    })
+    .catch(err => {
+      res.render('index', { error: err.message });
+    });
+});
+
+app.get('/', (req, res) => {
+  res.render('index', { resultadoValidacion: null, error: null });
+});
+
+app.listen(3000, () => {
+  console.log('Servidor escuchando en el puerto 3000');
+});
