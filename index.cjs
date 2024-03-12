@@ -64,55 +64,68 @@ app.post('/validar-numero', async (req, res) => {
 });
 */
 
-const express = require('express');
-const ejs = require('ejs');
-const bodyParser = require('body-parser');
+const express = require('express')
+const bodyParser = require('body-parser')
+const sdk = require('api')('@whapi/v1.7.5#27slv2oltdcs6xr')
 
-const sdk = require('api')('@whapi/v1.7.5#27slv2oltdcs6xr');
+sdk.auth('na2lcOPDAzbP1vb5AIlIZDnDcFDbblyo')
+const app = express()
 
-sdk.auth('wXuaanfszhFMlFEHvP05PBo3qPFsRks5');
+app.use(express.static('public'))
 
-const app = express();
-
-app.use(express.static('public'));
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: true }))
+app.set('view engine', 'ejs')
 
 app.post('/validar-numero', (req, res) => {
-  const numero = req.body.numero;
+  const numero = req.body.numero
+  const numeroAValidar = numero.replace(/[^0-9]/g, '') || ''
 
-  // Validar el número de teléfono (opcional)
+  const checkNum = async num => {
+    try {
+      const { data } = await sdk.checkPhones({
+        blocking: 'no_wait',
+        force_check: false,
+        contacts: [num]
+      })
+      return data
+    } catch (error) {
+      console.error(error)
+      res.render('index', {
+        error: error.message,
+        resultadoValidacion: 'no hay data'
+      })
+    }
 
-  // Reemplazar el número de prueba con el número ingresado
-  const numeroAValidar = numero.replace(/[^0-9]/g, '');
+    return null
+  }
 
-  // Usar la API para verificar el número
-  sdk.checkPhones({ blocking: 'no_wait', force_check: false, contacts: [numeroAValidar] })
-    .then(({ data }) => {
-        if (data.contacts.length === 0) {
-            sdk.checkPhones({ blocking: 'no_wait', force_check: false, contacts: [numeroAValidar] })
-              .then((res) => {
-                res.render('index', { resultadoValidacion: data });
-              }) 
-              .catch((err) => {
-              });
-        } else {
-          // El número es válido. Continuar con el flujo normal.
-          res.render('index', { resultadoValidacion: data });
+  checkNum(numeroAValidar).then(data => {
+    if (data.contacts.length === 0) {
+      checkNum(numeroAValidar).then(data2 => {
+        console.log('la verdadera', data2)
+        if (data2.contacts[0].status) {
+          res.render('index', {
+            resultadoValidacion: data2.contacts[0].status
+          })
         }
       })
-    .catch(err => {
-      res.render('index', { error: err.message });
-    });
-});
+
+      return
+    }
+
+    res.render('index', {
+      resultadoValidacion: data
+    })
+  })
+})
 
 app.get('/', (req, res) => {
-  res.render('index', { resultadoValidacion: null, error: null });
-});
+  res.render('index', { resultadoValidacion: null, error: null })
+})
 
 app.listen(3000, () => {
-  console.log('Servidor escuchando en el puerto 3000');
-});
+  console.log('Servidor escuchando en el puerto 3000')
+})
+
 
 //node index.cjs
