@@ -21,16 +21,29 @@
     <% if (resultadoValidacion) { %>
       <div id="resultadoValidacion">
         <p>Resultado de la validación:</p>
-        <pre><%= JSON.stringify(resultadoValidacion, null, 2) %></pre>
-      </div>
-    <% } else if (error) { %>
-      <div id="resultadoValidacion">
-        <p>Error: <%= error %></p>
+        <% if (resultadoValidacion.contacts[0].status === "valid") { %>
+          <p class="valido">¡El número es válido!</p>
+        <% } else { %>
+          <p class="no-valido">El número no es válido.</p>
+          <% if (resultadoValidacion.contacts[0].error && resultadoValidacion.contacts[0].error.code) { %>
+            <br>Código de error: <%= resultadoValidacion.contacts[0].error.code %>
+          <% } %>
+        <% } %>
+        <button type="button" id="resetear" onclick="resetear()">Resetear</button>
       </div>
     <% } %>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  function resetear() {
+    // Mostrar un mensaje de confirmación
+    if (confirm("¿Estás seguro de que quieres resetear?")) {
+      // Redireccionar a la ruta raíz
+      window.location.href = "/";
+    }
+  }
+  </script>
 </body>
 
 </html>

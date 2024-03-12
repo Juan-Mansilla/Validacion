@@ -70,7 +70,7 @@ const bodyParser = require('body-parser');
 
 const sdk = require('api')('@whapi/v1.7.5#27slv2oltdcs6xr');
 
-sdk.auth('EcEc84oqkWa8paCniXPzAqwHfYU2cYhi');
+sdk.auth('mDhpn7KlHzXMrS446U2qpbUiANxR4VcN');
 
 const app = express();
 
