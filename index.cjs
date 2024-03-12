@@ -64,7 +64,7 @@ app.post('/validar-numero', async (req, res) => {
 });
 */
 
-/*const express = require('express');
+const express = require('express');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
 
@@ -90,8 +90,18 @@ app.post('/validar-numero', (req, res) => {
   // Usar la API para verificar el número
   sdk.checkPhones({ blocking: 'no_wait', force_check: false, contacts: [numeroAValidar] })
     .then(({ data }) => {
-      res.render('index', { resultadoValidacion: data });
-    })
+        if (data.contacts.length === 0) {
+            sdk.checkPhones({ blocking: 'no_wait', force_check: false, contacts: [numeroAValidar] })
+              .then((res) => {
+                res.render('index', { resultadoValidacion: data });
+              }) 
+              .catch((err) => {
+              });
+        } else {
+          // El número es válido. Continuar con el flujo normal.
+          res.render('index', { resultadoValidacion: data });
+        }
+      })
     .catch(err => {
       res.render('index', { error: err.message });
     });
@@ -105,51 +115,4 @@ app.listen(3000, () => {
   console.log('Servidor escuchando en el puerto 3000');
 });
 
-//node index.cjs*/
-
-const express = require('express');
-const ejs = require('ejs');
-const bodyParser = require('body-parser');
-
-const sdk = require('api')('@whapi/v1.7.5#27slv2oltdcs6xr');
-
-sdk.auth('wXuaanfszhFMlFEHvP05PBo3qPFsRks5');
-
-const app = express();
-
-app.use(express.static('public'));
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set('view engine', 'ejs');
-
-app.post('/validar-numero', (req, res) => {
-  const numero = req.body.numero;
-
-  // Reemplazar el número de prueba con el número ingresado
-  const numeroAValidar = numero.replace(/[^0-9]/g, '');
-
-  // Usar la API para verificar el número
-  sdk.checkPhones({ blocking: 'no_wait', force_check: false, contacts: [numeroAValidar] })
-    .then(({ data }) => {
-      const resultadoValidacion = {
-        valido: data[0].status === 'valid',
-        whatsapp: data[0].details?.whatsapp,
-        error: data[0].error,
-        numero: numeroAValidar
-      };
-
-      res.render('index', { resultadoValidacion });
-    })
-    .catch(err => {
-      console.error('Error al verificar el número:', err.message);
-      res.render('index', { error: err.message });
-    });
-});
-
-app.get('/', (req, res) => {
-  res.render('index', { resultadoValidacion: null, error: null });
-});
-
-app.listen(3000, () => {
-  console.log('Servidor escuchando en el puerto 3000');
-});
+//node index.cjs
