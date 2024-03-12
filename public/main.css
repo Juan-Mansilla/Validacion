@@ -59,3 +59,13 @@ input[type="number"]::placeholder {
     font-size: 11px; /* Tamaño de fuente */
 }
 
+.valido {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .no-valido {
+    color: red;
+    font-weight: bold;
+  }
+  

@@ -70,9 +70,11 @@ const bodyParser = require('body-parser');
 
 const sdk = require('api')('@whapi/v1.7.5#27slv2oltdcs6xr');
 
-sdk.auth('spSGMF1exmVXWbIFwxMq44pgUVqoKn8B');
+sdk.auth('EcEc84oqkWa8paCniXPzAqwHfYU2cYhi');
 
 const app = express();
+
+app.use(express.static('public'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
