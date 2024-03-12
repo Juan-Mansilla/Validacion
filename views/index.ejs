@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,29 +22,61 @@
     <% if (resultadoValidacion) { %>
       <div id="resultadoValidacion">
         <p>Resultado de la validación:</p>
-        <% if (resultadoValidacion.contacts[0].status === "valid") { %>
-          <p class="valido">¡El número es válido!</p>
-        <% } else { %>
-          <p class="no-valido">El número no es válido.</p>
-          <% if (resultadoValidacion.contacts[0].error && resultadoValidacion.contacts[0].error.code) { %>
-            <br>Código de error: <%= resultadoValidacion.contacts[0].error.code %>
-          <% } %>
-        <% } %>
-        <button type="button" id="resetear" onclick="resetear()">Resetear</button>
+        <pre><%= JSON.stringify(resultadoValidacion, null, 2) %></pre>
+      </div>
+    <% } else if (error) { %>
+      <div id="resultadoValidacion">
+        <p>Error: <%= error %></p>
       </div>
     <% } %>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-  function resetear() {
-    // Mostrar un mensaje de confirmación
-    if (confirm("¿Estás seguro de que quieres resetear?")) {
-      // Redireccionar a la ruta raíz
-      window.location.href = "/";
-    }
-  }
-  </script>
+</body>
+
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validación de Números de Teléfono</title>
+  <link rel="stylesheet" href="/main.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Validación de Números de Teléfono</h1>
+    <form id="formularioPrefijo" action="/validar-numero" method="POST">
+      <label for="prefijoCodigoArea">Número con código de área:</label>
+      <input type="text" id="numero" name="numero" placeholder="Ej: 341xxxxxxx" required><br>
+
+      <button type="submit">Validar Número</button>
+    </form>
+
+    <% if (resultadoValidacion) { %>
+      <div id="resultadoValidacion">
+        <p>Resultado de la validación para el número <%= resultadoValidacion.numero %>:</p>
+        <ul>
+          <li><%= resultadoValidacion.valido ? "**Válido**" : "**No válido**" %></li>
+          <% if (resultadoValidacion.whatsapp) { %>
+            <li>Tiene WhatsApp: Sí</li>
+          <% } else { %>
+            <li>Tiene WhatsApp: No</li>
+          <% } %>
+        </ul>
+      </div>
+    <% } else if (error) { %>
+      <div id="resultadoValidacion">
+        <p>Error: <%= error %></p>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 
 </html>
