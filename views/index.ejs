@@ -13,15 +13,14 @@
     <h1>Validación de Números de Teléfono</h1>
     <form id="formularioPrefijo" action="/validar-numero" method="POST">
       <label for="prefijoCodigoArea">Numero con codigo de area:</label>
-      <input type="text" id="numero" name="numero" placeholder="Ej: 341xxxxxxx" required><br>
+      <input type="number" id="numero" name="numero" placeholder="Ej: 341xxxxxxx" required><br>
 
       <button type="submit">Validar Número</button>
     </form>
 
     <% if (resultadoValidacion) { %>
-      <div id="resultadoValidacion">
-        <p>Resultado de la validación:</p>
-        <pre><%= JSON.stringify(resultadoValidacion, null, 2) %></pre>
+      <div id="resultadoValidacion" class="<%= resultadoValido ? 'valido' : 'no-valido' %>">
+        <p><%= resultadoValidacion %></p>
       </div>
     <% } else if (error) { %>
       <div id="resultadoValidacion">
