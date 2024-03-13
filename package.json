@@ -14,7 +14,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "node index.cjs"
   },
   "author": "",
   "license": "ISC",
